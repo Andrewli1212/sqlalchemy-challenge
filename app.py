@@ -43,8 +43,8 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/start<br/>"
-        f"/api/v1.0/start/end"
+        f"/api/v1.0/start (format: yyyy-mm-dd)<br/>"
+        f"/api/v1.0/start/end (format: yyyy-mm-dd)"
     )
 @app.route("/api/v1.0/precipitation")
 def precipitation():
@@ -112,7 +112,7 @@ def start_end(start, end):
 
     # Query of the start and end date
     x = session.query(func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs)).\
-    filter(measurement.date >= start).filter(measurement.date < end).all()
+    filter(measurement.date >= start).filter(measurement.date <= end).all()
 
     # Convert list of tuples into normal list
     all_start_end = list(np.ravel(x))
