@@ -57,10 +57,10 @@ def precipitation():
 
     #Create a dictionary from the row data and append to a list of all_prcp
     all_prcp = []
-    for date, prcp in x:
+    for prcp, date in x:
         prcp_dict = {}
-        prcp_dict['date'] = date
         prcp_dict['precipitation'] = prcp
+        prcp_dict['date'] = date
         all_prcp.append(prcp_dict)
     
     return jsonify(all_prcp)
@@ -102,8 +102,14 @@ def start(start):
     
     session.close()
 
-    # Convert list of tuples into normal list
-    all_start = list(np.ravel(x))
+    # #Create a dictionary from the row data and append to a list of all_start
+    all_start = []
+    for TMIN, TMAX, TAVG in x:
+        start_dict = {}
+        start_dict['min'] = TMIN
+        start_dict['max'] = TMAX
+        start_dict['avg'] = TAVG
+        all_start.append(start_dict)
 
     return jsonify(all_start)
 
@@ -114,8 +120,14 @@ def start_end(start, end):
     x = session.query(func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs)).\
     filter(measurement.date >= start).filter(measurement.date <= end).all()
 
-    # Convert list of tuples into normal list
-    all_start_end = list(np.ravel(x))
+    #Create a dictionary from the row data and append to a list of all_start_end
+    all_start_end = []
+    for TMIN, TMAX, TAVG in x:
+        startend_dict = {}
+        startend_dict['min'] = TMIN
+        startend_dict['max'] = TMAX
+        startend_dict['avg'] = TAVG
+        all_start_end.append(startend_dict)
 
     return jsonify(all_start_end)
 
